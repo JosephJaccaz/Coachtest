@@ -3,29 +3,28 @@ import openai
 from langdetect import detect
 import smtplib
 from email.mime.text import MIMEText
+import io
 
 st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
 
-# Affichage de l’interface localisée
-
+# Logo
 st.markdown(
-    """
+    \"\"\"
     <div style='text-align: center; margin-bottom: 30px;'>
         <img src='https://www.thejob.ch/wp-content/themes/corris2014/images/corris_logo.svg' width='200'>
     </div>
-    """,
+    \"\"\",
     unsafe_allow_html=True
 )
 
-
-# 🌍 Sélecteur de langue manuel en haut de la page
+# 🌍 Sélecteur de langue
 langue_choisie = st.selectbox(
     "Choisis ta langue / Wähle deine Sprache / Scegli la tua lingua",
     options=["fr", "de", "it"],
     format_func=lambda x: {"fr": "Français 🇫🇷", "de": "Deutsch 🇩🇪", "it": "Italiano 🇮🇹"}[x]
 )
 
-# 📚 Textes traduits
+# Textes localisés
 textes = {
     "fr": {
         "titre": "🎤 Speech Coach IA",
@@ -52,39 +51,26 @@ textes = {
         "transcription_label": "📝 Trascrizione generata:"
     }
 }
-
-# 🔄 Sélection des textes selon la langue choisie
 t = textes[langue_choisie]
 
-
+# Interface
 st.title(t["titre"])
 st.write(t["intro"])
 user_email = st.text_input(t["email_label"], key="email")
 audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
 st.markdown(t["info_format"])
 
-
 openai.api_key = st.secrets["openai_key"]
-
-
 
 def format_feedback_as_html(feedback_text, langue):
     html = feedback_text
-
-    # Mise en couleur ✓ / ⚠️
     html = html.replace("✓", "<span style='color:green; font-weight:bold;'>✓</span>")
     html = html.replace("⚠️", "<span style='color:red; font-weight:bold;'>⚠️</span>")
-
-    # Suggestions d'amélioration en bleu (toutes langues)
     html = html.replace("Suggestion d'amélioration", "<span style='color:#007BFF; font-weight:bold;'>Suggestion d'amélioration</span>")
     html = html.replace("Verbesserungsvorschlag", "<span style='color:#007BFF; font-weight:bold;'>Verbesserungsvorschlag</span>")
     html = html.replace("Suggerimento di miglioramento", "<span style='color:#007BFF; font-weight:bold;'>Suggerimento di miglioramento</span>")
-
-    # Nettoyage des ** (gras Markdown)
     html = html.replace("**", "")
-
-    # Mise en paragraphes avec titres bien visibles
-    paragraphs = html.split("\n")
+    paragraphs = html.split("\\n")
     html_body = ""
     for line in paragraphs:
         line = line.strip()
@@ -98,7 +84,6 @@ def format_feedback_as_html(feedback_text, langue):
         else:
             html_body += f"<p style='margin:4px 0;'>{line}</p>"
 
-    # Intro & signature par langue
     if langue == "de":
         intro = "<p>Hallo 👋<br>Hier ist dein persönliches Feedback zur Analyse deines Sprach-Pitchs :</p><br>"
         signature = "<p style='color:gray;'>--<br>Speech Coach IA 🧠<br>Ein Werkzeug mit Herz – für Fundraiser und Trainer:innen.</p>"
@@ -109,50 +94,38 @@ def format_feedback_as_html(feedback_text, langue):
         intro = "<p>Bonjour 👋<br>Voici ton feedback personnalisé suite à l’analyse de ton pitch vocal :</p><br>"
         signature = "<p style='color:gray;'>--<br>Speech Coach IA 🧠<br>Un outil conçu avec soin pour les dialogueurs et leurs formateurs.</p>"
 
-    # Easter egg français 😄
     if langue == "fr":
         signature += "<p style='font-size:12px; color:#aaa;'>PS : Ce feedback a été généré avec amour, café ☕ et un soupçon de GPT par Joseph 💻</p>"
 
-    return f"""
+    return f\"\"\"
     <div style='font-family: Verdana, sans-serif; font-size: 15px; color:#000;'>
         {intro}
         {html_body}
         {signature}
     </div>
-
-    """
-
-
-
+    \"\"\"
 
 if user_email and audio_file is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
 
     with st.spinner("⏳ Transcription en cours avec Whisper..."):
-        import io
-
-        # Lire le fichier audio
         audio_bytes = audio_file.read()
         audio_io = io.BytesIO(audio_bytes)
-        audio_io.name = audio_file.name  # Nécessaire pour que l'API détecte le format
-
-        # Transcription via OpenAI (SDK v1.x)
+        audio_io.name = audio_file.name
         transcript = openai.audio.transcriptions.create(
             model="whisper-1",
             file=audio_io,
             response_format="text"
         )
 
-
-
     st.text_area(t["transcription_label"], transcript, height=300)
-
 
     langue_detectee = detect(transcript)
     st.info(f"🗣️ Langue détectée : {langue_detectee.upper()}")
 
-if langue_choisie == "fr":
-    prompt_intro = """Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
+    # Définir le prompt selon la langue choisie
+    if langue_choisie == "fr":
+        prompt_intro = \"\"\"Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
 
 Tu t'adresses ici directement à un·e dialogueur·euse qui vient d'enregistrer un **speech** d'entraînement. Ton rôle est de lui faire un retour complet, clair et motivant.
 
@@ -179,6 +152,14 @@ Ex : “7/10 – Tu poses une intention très claire dès le départ, mais la pa
 
 Dans cette partie, analyse objectivement le speech selon les 7 étapes du discours classique d’un·e dialogueur·euse. Tu peux ici revenir à un ton plus neutre (sans tutoiement).
 
+🎯 1. Accroche (qui doit transmettre de la curiosité et ou de la sympathie, il faut éviter les questions fermées avec une durée de temps comme "salut, tu as deux minutes" ou "je m'excuse de te déranger") 
+🤝 2. Introduction  (qui doit inspirer de la confiance, il faut qu'on ait l'impression d'un dialogue, avec des questions pour savoir que fait la personne (fictive) dans la vie)
+💢 3. Problème  (qui doit transmettre de l'empathie et de l'indignation, il faut expliquer le problème, et que cela n'est pas normal qu'il existe)
+🌱 4. Solution  (qui doit transmettre de l'espoir, montrer que ce problème n'est pas insoluble, il faut se remettre à sourire et avoir un ton enjoué)
+🚀 5. Succès  (qui doit transmettre de l'envie : montrer que cela est concret et que dans le passé, l'association a eu des succès)
+➡️ 6. Transition  (qui doit être une phrase affirmative très simple, qui guide la personne et fait le lien entre le speech rempli d'émotions et le formulaire)
+📝 7. Explication du formulaire (simple, structurée et claire, la terminologie doit être centrée sur un formulaire en deux parties : une partie identité, une partie générosité, que le tout semble simple)
+
 Voici la structure à suivre pour chaque étape :
 
 🎯 **[Nom de la partie]**
@@ -196,10 +177,9 @@ Reprends ici le tutoiement.
 Termine par un message chaleureux, encourageant et motivant. Félicite l’effort fourni, encourage à continuer, et donne quelques conseils utiles pour améliorer tes prochains speechs.
 
 Tu peux conclure de manière simple, pro et humaine.
-"""
-
-elif langue_choisie == "de":
-    prompt_intro = """Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
+\"\"\"
+    elif langue_choisie == "de":
+        prompt_intro = \"\"\"Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
 
 Du sprichst hier direkt mit einem neuen Dialoger oder einer neuen Dialogerin, der oder die einen **Speech** zur Übung aufgenommen hat. Deine Aufgabe ist es, ein vollständiges, klares und motivierendes Feedback zu geben.
 
@@ -251,10 +231,9 @@ Hier kehrst du zurück zum „du“.
 Beende dein Feedback mit einer positiven, ermutigenden Nachricht. Erkenne die Fortschritte an, motiviere zur weiteren Übung und gib ggf. 1–2 Tipps für zukünftige Speeches.
 
 Verabschiede dich freundlich und professionell – wie ein wohlwollender Coach.
-"""
-
-elif langue_choisie == "it":
-    prompt_intro = """Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
+\"\"\"
+    elif langue_choisie == "it":
+        prompt_intro = \"\"\"Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
 
 Ti rivolgi direttamente a un nuovo dialogatore o dialogatrice che ha appena registrato uno **speech** di allenamento. Il tuo compito è fornire un feedback completo, chiaro e motivante.
 
@@ -281,7 +260,7 @@ Esempio: “7/10 – Hai mostrato una buona intenzione fin dall'inizio, ma la pa
 
 In questa sezione, analizza lo speech con tono più neutro e oggettivo. Segui le 7 fasi classiche del discorso del dialogatore:
 
-🎯 1. Gancio  
+🎯 1. Approccio  
 🤝 2. Introduzione  
 💢 3. Problema  
 🌱 4. Soluzione  
@@ -306,22 +285,20 @@ Ora torna a rivolgerti con il "tu".
 Chiudi con un messaggio positivo e incoraggiante. Riconosci l’impegno, valorizza i progressi, e invita a continuare ad allenarsi. Se vuoi, aggiungi 1 o 2 consigli utili per i prossimi speech.
 
 Concludi in modo semplice, professionale e umano – come un buon coach.
-"""
+\"\"\"
+    else:
+        prompt_intro = "Voici un speech à analyser :"
 
-else:
-    prompt_intro = "Voici un speech à analyser :"
-
-
-    prompt = f"""{prompt_intro}
+    prompt = f\"\"\"{prompt_intro}
 
 \"\"\"{transcript}\"\"\"
-"""
+\"\"\"
 
     with st.spinner("💬 Génération du feedback pédagogique..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "..."},
+                {"role": "system", "content": "Tu es un coach bienveillant et structuré pour des ONG."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7,
@@ -329,11 +306,9 @@ else:
         )
         feedback = response.choices[0].message.content
 
-
         if "10/10" in feedback:
             st.balloons()
             st.success("🔥 WOUAH ! 10/10 – Tu viens de casser la baraque avec ce speech 🔥")
-
 
     st.markdown(feedback, unsafe_allow_html=True)
 
