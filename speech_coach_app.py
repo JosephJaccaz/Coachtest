@@ -5,8 +5,50 @@ import smtplib
 from email.mime.text import MIMEText
 
 st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
-st.title("🎤 Speech Coach IA")
-st.write("Bienvenue ! Upload ici un speech pour savoir si ton speech colle à nos standards vus en formation.")
+# 🌍 Sélecteur de langue manuel en haut de la page
+langue_choisie = st.selectbox(
+    "Choisis ta langue / Wähle deine Sprache / Scegli la tua lingua",
+    options=["fr", "de", "it"],
+    format_func=lambda x: {"fr": "Français 🇫🇷", "de": "Deutsch 🇩🇪", "it": "Italiano 🇮🇹"}[x]
+)
+
+# 📚 Textes traduits
+textes = {
+    "fr": {
+        "titre": "🎤 Speech Coach IA",
+        "intro": "Bienvenue ! Upload ici un speech pour savoir s’il colle aux standards vus en formation.",
+        "upload_label": "📁 Dépose ici ton fichier audio (MP3 ou WAV uniquement)",
+        "email_label": "✉️ Adresse e-mail du·de la Dialogueur·euse (pour recevoir le feedback)",
+        "info_format": "⚠️ Pour l’instant, seuls les fichiers MP3 et WAV sont pris en charge.",
+        "transcription_label": "📝 Transcription générée :"
+    },
+    "de": {
+        "titre": "🎤 Speech Coach IA",
+        "intro": "Willkommen! Lade hier deine Sprachaufnahme hoch, um ein Feedback zu erhalten.",
+        "upload_label": "📁 Hier deine Audiodatei hochladen (nur MP3 oder WAV)",
+        "email_label": "✉️ E-Mail-Adresse des Fundraisers (für den Erhalt des Feedbacks)",
+        "info_format": "⚠️ Aktuell werden nur MP3- und WAV-Dateien unterstützt.",
+        "transcription_label": "📝 Transkription:"
+    },
+    "it": {
+        "titre": "🎤 Speech Coach IA",
+        "intro": "Benvenuto! Carica qui il tuo speech per ricevere un feedback.",
+        "upload_label": "📁 Carica il tuo file audio (solo MP3 o WAV)",
+        "email_label": "✉️ Indirizzo e-mail del dialogatore (per ricevere il feedback)",
+        "info_format": "⚠️ Al momento sono supportati solo file MP3 e WAV.",
+        "transcription_label": "📝 Trascrizione generata:"
+    }
+}
+
+# 🔄 Sélection des textes selon la langue choisie
+t = textes[langue_choisie]
+
+# Affichage de l’interface localisée
+st.title(t["titre"])
+st.write(t["intro"])
+user_email = st.text_input(t["email_label"])
+audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"])
+st.markdown(t["info_format"])
 
 openai.api_key = st.secrets["openai_key"]
 
@@ -92,15 +134,14 @@ if user_email and audio_file is not None:
 
 
 
-    st.text_area("📝 Transcription générée :", transcript, height=300)
+    st.text_area(t["transcription_label"], transcript, height=300)
+
 
     langue_detectee = detect(transcript)
     st.info(f"🗣️ Langue détectée : {langue_detectee.upper()}")
 
-    if langue_detectee == "fr":
-      prompt_intro = """
-
-Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
+    if langue_choisie == "fr":
+    prompt_intro = """Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
 
 Tu t'adresses ici directement à un·e dialogueur·euse qui vient d'enregistrer un **speech** d'entraînement. Ton rôle est de lui faire un retour complet, clair et motivant.
 
@@ -127,14 +168,6 @@ Ex : “7/10 – Tu poses une intention très claire dès le départ, mais la pa
 
 Dans cette partie, analyse objectivement le speech selon les 7 étapes du discours classique d’un·e dialogueur·euse. Tu peux ici revenir à un ton plus neutre (sans tutoiement).
 
-🎯 1. Accroche (qui doit transmettre de la curiosité et ou de la sympathie, il faut éviter les questions fermées avec une durée de temps comme "salut, tu as deux minutes" ou "je m'excuse de te déranger") 
-🤝 2. Introduction  (qui doit inspirer de la confiance, il faut qu'on ait l'impression d'un dialogue, avec des questions pour savoir que fait la personne (fictive) dans la vie)
-💢 3. Problème  (qui doit transmettre de l'empathie et de l'indignation, il faut expliquer le problème, et que cela n'est pas normal qu'il existe)
-🌱 4. Solution  (qui doit transmettre de l'espoir, montrer que ce problème n'est pas insoluble, il faut se remettre à sourire et avoir un ton enjoué)
-🚀 5. Succès  (qui doit transmettre de l'envie : montrer que cela est concret et que dans le passé, l'association a eu des succès)
-➡️ 6. Transition  (qui doit être une phrase affirmative très simple, qui guide la personne et fait le lien entre le speech rempli d'émotions et le formulaire)
-📝 7. Explication du formulaire (simple, structurée et claire, la terminologie doit être centrée sur un formulaire en deux parties : une partie identité, une partie générosité, que le tout semble simple)
-
 Voici la structure à suivre pour chaque étape :
 
 🎯 **[Nom de la partie]**
@@ -154,9 +187,8 @@ Termine par un message chaleureux, encourageant et motivant. Félicite l’effor
 Tu peux conclure de manière simple, pro et humaine.
 """
 
-
-    elif langue_detectee == "de":
-        prompt_intro = """Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
+elif langue_choisie == "de":
+    prompt_intro = """Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
 
 Du sprichst hier direkt mit einem neuen Dialoger oder einer neuen Dialogerin, der oder die einen **Speech** zur Übung aufgenommen hat. Deine Aufgabe ist es, ein vollständiges, klares und motivierendes Feedback zu geben.
 
@@ -209,8 +241,9 @@ Beende dein Feedback mit einer positiven, ermutigenden Nachricht. Erkenne die Fo
 
 Verabschiede dich freundlich und professionell – wie ein wohlwollender Coach.
 """
-    elif langue_detectee == "it":
-        prompt_intro = """Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
+
+elif langue_choisie == "it":
+    prompt_intro = """Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
 
 Ti rivolgi direttamente a un nuovo dialogatore o dialogatrice che ha appena registrato uno **speech** di allenamento. Il tuo compito è fornire un feedback completo, chiaro e motivante.
 
@@ -237,7 +270,7 @@ Esempio: “7/10 – Hai mostrato una buona intenzione fin dall'inizio, ma la pa
 
 In questa sezione, analizza lo speech con tono più neutro e oggettivo. Segui le 7 fasi classiche del discorso del dialogatore:
 
-🎯 1. Approccio  
+🎯 1. Gancio  
 🤝 2. Introduzione  
 💢 3. Problema  
 🌱 4. Soluzione  
@@ -263,8 +296,10 @@ Chiudi con un messaggio positivo e incoraggiante. Riconosci l’impegno, valoriz
 
 Concludi in modo semplice, professionale e umano – come un buon coach.
 """
-    else:
-        prompt_intro = "Voici un pitch oral à analyser :"
+
+else:
+    prompt_intro = "Voici un speech à analyser :"
+
 
     prompt = f"""{prompt_intro}
 
