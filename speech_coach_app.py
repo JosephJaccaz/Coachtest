@@ -79,18 +79,15 @@ if user_email and audio_file is not None:
         # Lecture du fichier audio
         audio_bytes = audio_file.read()
         audio_io = io.BytesIO(audio_bytes)
-
-        # Ajout du nom pour que l'API reconnaisse le format
         audio_io.name = audio_file.name
 
-        # Transcription avec OpenAI Whisper v1
-        transcript_response = openai.audio.transcriptions.create(
+        # Transcription avec Whisper (OpenAI SDK v1)
+        transcript = openai.audio.transcriptions.create(
             model="whisper-1",
             file=audio_io,
             response_format="text"
         )
 
-        transcript = transcript_response.text
 
 
     st.text_area("📝 Transcription générée :", transcript, height=300)
