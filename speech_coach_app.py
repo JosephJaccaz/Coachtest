@@ -73,17 +73,22 @@ def format_feedback_as_html(feedback_text, langue):
 if user_email and audio_file is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
 
-    with st.spinner("⏳ Transcription en cours avec Whisper..."):
+        with st.spinner("⏳ Transcription en cours avec Whisper..."):
         import io
+
         audio_bytes = audio_file.read()
         audio_io = io.BytesIO(audio_bytes)
+
+        # Le nom est obligatoire pour que le SDK le reconnaisse comme un fichier audio
+        audio_io.name = audio_file.name
 
         transcript_response = openai.audio.transcriptions.create(
             model="whisper-1",
             file=audio_io,
             response_format="text"
         )
-        transcript = transcript_response
+        transcript = transcript_response.text
+
 
     st.text_area("📝 Transcription générée :", transcript, height=300)
 
