@@ -11,7 +11,9 @@ st.write("Bienvenue ! Upload ici un speech pour savoir si ton speech colle à no
 openai.api_key = st.secrets["openai_key"]
 
 user_email = st.text_input("✉️ Adresse e-mail du·de la Dialogueur·euse (pour recevoir le feedback)")
-audio_file = st.file_uploader("📁 Dépose ici ton fichier audio (MP3, WAV, M4A)", type=["mp3", "wav", "m4a"])
+audio_file = st.file_uploader("📁 Dépose ici ton fichier audio (MP3 ou WAV uniquement)", type=["mp3", "wav"])
+st.markdown("⚠️ Pour l’instant, seuls les fichiers `.mp3` et `.wav` sont pris en charge. Si tu utilises un enregistreur vocal, exporte en `.mp3`.")
+
 
 def format_feedback_as_html(feedback_text, langue):
     html = feedback_text
@@ -75,33 +77,18 @@ if user_email and audio_file is not None:
 
     with st.spinner("⏳ Transcription en cours avec Whisper..."):
         import io
-        from pydub import AudioSegment
 
-        # Lire le fichier depuis Streamlit
+        # Lire le fichier audio
         audio_bytes = audio_file.read()
-        extension = audio_file.name.split(".")[-1].lower()
+        audio_io = io.BytesIO(audio_bytes)
+        audio_io.name = audio_file.name  # Nécessaire pour que l'API détecte le format
 
-        # Cas particulier : .m4a → on convertit en .mp3 pour Whisper
-        if extension == "m4a":
-            original_audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="m4a")
-            converted_io = io.BytesIO()
-            original_audio.export(converted_io, format="mp3")
-            converted_io.name = audio_file.name.replace(".m4a", ".mp3")
-            converted_io.seek(0)
-            file_to_send = converted_io
-        else:
-            # Pour les formats directement compatibles
-            audio_io = io.BytesIO(audio_bytes)
-            audio_io.name = audio_file.name
-            file_to_send = audio_io
-
-        # Appel à Whisper
+        # Transcription via OpenAI (SDK v1.x)
         transcript = openai.audio.transcriptions.create(
             model="whisper-1",
-            file=file_to_send,
+            file=audio_io,
             response_format="text"
         )
-
 
 
 
