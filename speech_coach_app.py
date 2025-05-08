@@ -140,7 +140,7 @@ if user_email and audio_file is not None:
     langue_detectee = detect(transcript)
     st.info(f"🗣️ Langue détectée : {langue_detectee.upper()}")
 
-    if langue_choisie == "fr":
+if langue_choisie == "fr":
     prompt_intro = """Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
 
 Tu t'adresses ici directement à un·e dialogueur·euse qui vient d'enregistrer un **speech** d'entraînement. Ton rôle est de lui faire un retour complet, clair et motivant.
