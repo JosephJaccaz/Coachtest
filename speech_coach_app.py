@@ -125,7 +125,7 @@ if user_email and audio_file is not None:
 
     # Définir le prompt selon la langue choisie
     if langue_choisie == "fr":
-        prompt_intro = \"\"\"Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
+        prompt_intro = """Tu es un coach expert en rhétorique, spécialisé dans la formation de dialogueurs pour des ONG.
 
 Tu t'adresses ici directement à un·e dialogueur·euse qui vient d'enregistrer un **speech** d'entraînement. Ton rôle est de lui faire un retour complet, clair et motivant.
 
@@ -177,9 +177,9 @@ Reprends ici le tutoiement.
 Termine par un message chaleureux, encourageant et motivant. Félicite l’effort fourni, encourage à continuer, et donne quelques conseils utiles pour améliorer tes prochains speechs.
 
 Tu peux conclure de manière simple, pro et humaine.
-\"\"\"
+"""
     elif langue_choisie == "de":
-        prompt_intro = \"\"\"Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
+        prompt_intro = """Du bist ein Rhetorik-Coach, spezialisiert auf die Schulung von Fundraisern für NGOs im Direktkontakt.
 
 Du sprichst hier direkt mit einem neuen Dialoger oder einer neuen Dialogerin, der oder die einen **Speech** zur Übung aufgenommen hat. Deine Aufgabe ist es, ein vollständiges, klares und motivierendes Feedback zu geben.
 
@@ -231,9 +231,9 @@ Hier kehrst du zurück zum „du“.
 Beende dein Feedback mit einer positiven, ermutigenden Nachricht. Erkenne die Fortschritte an, motiviere zur weiteren Übung und gib ggf. 1–2 Tipps für zukünftige Speeches.
 
 Verabschiede dich freundlich und professionell – wie ein wohlwollender Coach.
-\"\"\"
+"""
     elif langue_choisie == "it":
-        prompt_intro = \"\"\"Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
+        prompt_intro = """Sei un coach esperto in retorica, specializzato nella formazione dei dialogatori per ONG nel contatto diretto.
 
 Ti rivolgi direttamente a un nuovo dialogatore o dialogatrice che ha appena registrato uno **speech** di allenamento. Il tuo compito è fornire un feedback completo, chiaro e motivante.
 
@@ -285,7 +285,7 @@ Ora torna a rivolgerti con il "tu".
 Chiudi con un messaggio positivo e incoraggiante. Riconosci l’impegno, valorizza i progressi, e invita a continuare ad allenarsi. Se vuoi, aggiungi 1 o 2 consigli utili per i prossimi speech.
 
 Concludi in modo semplice, professionale e umano – come un buon coach.
-\"\"\"
+"""
     else:
         prompt_intro = "Voici un speech à analyser :"
 
