@@ -75,18 +75,33 @@ if user_email and audio_file is not None:
 
     with st.spinner("⏳ Transcription en cours avec Whisper..."):
         import io
+        from pydub import AudioSegment
 
-        # Lecture du fichier audio
+        # Lire le fichier depuis Streamlit
         audio_bytes = audio_file.read()
-        audio_io = io.BytesIO(audio_bytes)
-        audio_io.name = audio_file.name
+        extension = audio_file.name.split(".")[-1].lower()
 
-        # Transcription avec Whisper (OpenAI SDK v1)
+        # Cas particulier : .m4a → on convertit en .mp3 pour Whisper
+        if extension == "m4a":
+            original_audio = AudioSegment.from_file(io.BytesIO(audio_bytes), format="m4a")
+            converted_io = io.BytesIO()
+            original_audio.export(converted_io, format="mp3")
+            converted_io.name = audio_file.name.replace(".m4a", ".mp3")
+            converted_io.seek(0)
+            file_to_send = converted_io
+        else:
+            # Pour les formats directement compatibles
+            audio_io = io.BytesIO(audio_bytes)
+            audio_io.name = audio_file.name
+            file_to_send = audio_io
+
+        # Appel à Whisper
         transcript = openai.audio.transcriptions.create(
             model="whisper-1",
-            file=audio_io,
+            file=file_to_send,
             response_format="text"
         )
+
 
 
 
