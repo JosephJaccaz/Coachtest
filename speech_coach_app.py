@@ -296,7 +296,7 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 
     with st.spinner("💬 Génération du feedback pédagogique..."):
         response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4-turbo",
             messages=[
                 {"role": "system", "content": "Tu es un coach bienveillant et structuré pour des ONG."},
                 {"role": "user", "content": prompt}
