@@ -44,6 +44,14 @@ textes = {
 t = textes[langue_choisie]
 
 # Affichage de l’interface localisée
+st.image(
+    "https://www.google.com/imgres?q=corris&imgurl=https%3A%2F%2Fwww.thejob.ch%2Fwp-content%2Fthemes%2Fcorris2014%2Fimages%2Fcorris_logo.svg&imgrefurl=https%3A%2F%2Fwww.thejob.ch%2Ffr%2Ffoire-aux-questions%2F&docid=4sALgY_xbVAK4M&tbnid=YklYwK7ajUkYGM&vet=12ahUKEwjL7cDt7JONAxU487sIHbtuKqkQM3oECG4QAA..i&w=800&h=205&hcb=2&ved=2ahUKEwjL7cDt7JONAxU487sIHbtuKqkQM3oECG4QAA",
+    width=200,
+    use_column_width=False,
+    caption=None
+)
+
+
 st.title(t["titre"])
 st.write(t["intro"])
 user_email = st.text_input(t["email_label"], key="email")
