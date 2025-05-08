@@ -46,14 +46,14 @@ t = textes[langue_choisie]
 # Affichage de l’interface localisée
 st.title(t["titre"])
 st.write(t["intro"])
-user_email = st.text_input(t["email_label"])
-audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"])
+user_email = st.text_input(t["email_label"], key="email")
+audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
 st.markdown(t["info_format"])
+
 
 openai.api_key = st.secrets["openai_key"]
 
-user_email = st.text_input("✉️ Adresse e-mail du·de la Dialogueur·euse (pour recevoir le feedback)")
-audio_file = st.file_uploader("📁 Dépose ici ton fichier audio (MP3 ou WAV uniquement)", type=["mp3", "wav"])
+
 st.markdown("⚠️ Pour l’instant, seuls les fichiers `.mp3` et `.wav` sont pris en charge. Si tu utilises un enregistreur vocal, exporte en `.mp3`.")
 
 
