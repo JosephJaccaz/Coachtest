@@ -119,7 +119,7 @@ if user_email and audio_file is not None:
             response_format="text"
         )
 
-    st.text_area(t["transcription_label"], transcript, height=300)
+    st.success("✅ Transcription terminée. Analyse en cours...")
 
     langue_detectee = detect(transcript)
     st.info(f"🗣️ Langue détectée : {langue_detectee.upper()}")
