@@ -292,8 +292,9 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 
     prompt = f"""{prompt_intro}
 
-"""{transcript}"""
+\"\"\"{transcript}\"\"\"
 """
+
 
     with st.spinner("💬 Génération du feedback pédagogique..."):
         response = openai.chat.completions.create(
