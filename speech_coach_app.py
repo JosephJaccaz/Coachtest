@@ -73,7 +73,7 @@ def format_feedback_as_html(feedback_text, langue):
 if user_email and audio_file is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
 
-        with st.spinner("⏳ Transcription en cours avec Whisper..."):
+    with st.spinner("⏳ Transcription en cours avec Whisper..."):
         import io
         audio_bytes = audio_file.read()
         audio_io = io.BytesIO(audio_bytes)
