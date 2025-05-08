@@ -54,8 +54,6 @@ st.markdown(t["info_format"])
 openai.api_key = st.secrets["openai_key"]
 
 
-st.markdown("⚠️ Pour l’instant, seuls les fichiers `.mp3` et `.wav` sont pris en charge. Si tu utilises un enregistreur vocal, exporte en `.mp3`.")
-
 
 def format_feedback_as_html(feedback_text, langue):
     html = feedback_text
