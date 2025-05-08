@@ -13,6 +13,12 @@ st.image(
     use_container_width=False
 )
 
+st.markdown(
+    "<div style='text-align: center;'><img src='https://URL_DU_LOGO.png' width='200'></div>",
+    unsafe_allow_html=True
+)
+
+
 # 🌍 Sélecteur de langue manuel en haut de la page
 langue_choisie = st.selectbox(
     "Choisis ta langue / Wähle deine Sprache / Scegli la tua lingua",
