@@ -1,3 +1,4 @@
+
 import streamlit as st
 import openai
 from langdetect import detect
@@ -9,11 +10,11 @@ st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
 
 # Logo
 st.markdown(
-    \"\"\"
+    '''
     <div style='text-align: center; margin-bottom: 30px;'>
         <img src='https://www.thejob.ch/wp-content/themes/corris2014/images/corris_logo.svg' width='200'>
     </div>
-    \"\"\",
+    ''',
     unsafe_allow_html=True
 )
 
@@ -70,7 +71,7 @@ def format_feedback_as_html(feedback_text, langue):
     html = html.replace("Verbesserungsvorschlag", "<span style='color:#007BFF; font-weight:bold;'>Verbesserungsvorschlag</span>")
     html = html.replace("Suggerimento di miglioramento", "<span style='color:#007BFF; font-weight:bold;'>Suggerimento di miglioramento</span>")
     html = html.replace("**", "")
-    paragraphs = html.split("\\n")
+    paragraphs = html.split("\n")
     html_body = ""
     for line in paragraphs:
         line = line.strip()
@@ -97,13 +98,13 @@ def format_feedback_as_html(feedback_text, langue):
     if langue == "fr":
         signature += "<p style='font-size:12px; color:#aaa;'>PS : Ce feedback a été généré avec amour, café ☕ et un soupçon de GPT par Joseph 💻</p>"
 
-    return f\"\"\"
+    return f"""
     <div style='font-family: Verdana, sans-serif; font-size: 15px; color:#000;'>
         {intro}
         {html_body}
         {signature}
     </div>
-    \"\"\"
+    """
 
 if user_email and audio_file is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
