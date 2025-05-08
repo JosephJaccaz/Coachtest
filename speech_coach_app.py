@@ -270,7 +270,7 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 """
 
     with st.spinner("💬 Génération du feedback pédagogique..."):
-        response = openai.ChatCompletion.create(
+        response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "Tu es un coach bienveillant et structuré pour des ONG."},
@@ -280,7 +280,8 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
             max_tokens=1500
         )
 
-        feedback = response["choices"][0]["message"]["content"]
+        feedback = response.choices[0].message.content
+
 
         if "10/10" in feedback:
             st.balloons()
