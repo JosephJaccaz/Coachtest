@@ -432,23 +432,22 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
             st.balloons()
             st.success("🔥 WOUAH ! 10/10 – Tu viens de casser la baraque avec ce speech 🔥")
 
-    # Affichage feedback et baromètre
-    if note:
-        st.markdown("### 🎯 Baromètre de performance")
-        draw_gauge(note)
-        st.markdown(f"**{interpret_note(note, langue_choisie)}**")
+# Affichage feedback et baromètre
+if note:
+    st.markdown("### 🎯 Baromètre de performance")
+    draw_gauge(note)
+    st.markdown(f"**{interpret_note(note, langue_choisie)}**")
 
-
-        with st.expander({
-    "fr": "ℹ️ Que signifie le baromètre ?",
-    "de": "ℹ️ Was bedeutet das Barometer?",
-    "it": "ℹ️ Cosa indica il barometro?"
-}[langue_choisie]):
-    st.markdown(barometre_legendes[langue_choisie])
-
+    with st.expander({
+        "fr": "ℹ️ Que signifie le baromètre ?",
+        "de": "ℹ️ Was bedeutet das Barometer?",
+        "it": "ℹ️ Cosa indica il barometro?"
+    }[langue_choisie]):
+        st.markdown(barometre_legendes[langue_choisie])
 
     st.markdown("---")
     st.markdown(feedback, unsafe_allow_html=True)
+
 
     # Envoi par email
     try:
