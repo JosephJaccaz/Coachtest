@@ -110,28 +110,40 @@ def format_feedback_as_html(feedback_text, langue):
     </div>
     """
 def draw_gauge(score):
-    fig, ax = plt.subplots(figsize=(6, 3))
-    ax.set_facecolor("white")
+    import matplotlib.pyplot as plt
+    import numpy as np
 
-    # Zones colorées
-    labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-    colors = ['darkred']*2 + ['red']*2 + ['orange']*2 + ['yellowgreen']*2 + ['green']*2
-    angles = np.linspace(0, 180, len(labels)+1)
+    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw={'projection': 'polar'})
+    ax.set_theta_zero_location('N')
+    ax.set_theta_direction(-1)
 
-    for i in range(len(labels)):
-        ax.barh(0, width=angles[i+1]-angles[i], left=angles[i], height=0.5, color=colors[i])
+    # Définition des couleurs et zones
+    zones = [
+        (1, 2, 'darkred'),
+        (2, 4, 'red'),
+        (4, 6, 'orange'),
+        (6, 8, 'yellowgreen'),
+        (8, 10, 'green')
+    ]
 
-    # Aiguille
-    angle = np.interp(score, [1, 10], [0, 180])
+    for start, end, color in zones:
+        theta1 = np.interp(start, [0, 10], [0, np.pi])
+        theta2 = np.interp(end, [0, 10], [0, np.pi])
+        ax.barh(1, width=theta2-theta1, left=theta1, height=0.3, color=color, edgecolor='white')
+
+    # Position de l'aiguille
+    angle = np.interp(score, [0, 10], [0, np.pi])
     ax.plot([angle, angle], [0, 1], color='black', lw=3)
 
-    # Masquer les axes
-    ax.set_xlim(0, 180)
-    ax.set_ylim(0, 1.2)
-    ax.axis('off')
+    # Enlève tout le reste
+    ax.set_axis_off()
+    ax.set_ylim(0, 1.1)
 
-    # Affichage dans Streamlit
+    # Titre facultatif
+    plt.title("Score sur 10", y=1.1, fontsize=14)
+
     st.pyplot(fig)
+
 
 
 if user_email and audio_file is not None:
