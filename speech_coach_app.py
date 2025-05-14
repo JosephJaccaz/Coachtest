@@ -5,6 +5,10 @@ from langdetect import detect
 import smtplib
 from email.mime.text import MIMEText
 import io
+import matplotlib.pyplot as plt
+import numpy as np
+
+
 
 st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
 
@@ -105,6 +109,30 @@ def format_feedback_as_html(feedback_text, langue):
         {signature}
     </div>
     """
+def draw_gauge(score):
+    fig, ax = plt.subplots(figsize=(6, 3))
+    ax.set_facecolor("white")
+
+    # Zones colorées
+    labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    colors = ['darkred']*2 + ['red']*2 + ['orange']*2 + ['yellowgreen']*2 + ['green']*2
+    angles = np.linspace(0, 180, len(labels)+1)
+
+    for i in range(len(labels)):
+        ax.barh(0, width=angles[i+1]-angles[i], left=angles[i], height=0.5, color=colors[i])
+
+    # Aiguille
+    angle = np.interp(score, [1, 10], [0, 180])
+    ax.plot([angle, angle], [0, 1], color='black', lw=3)
+
+    # Masquer les axes
+    ax.set_xlim(0, 180)
+    ax.set_ylim(0, 1.2)
+    ax.axis('off')
+
+    # Affichage dans Streamlit
+    st.pyplot(fig)
+
 
 if user_email and audio_file is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
@@ -322,11 +350,23 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
         )
         feedback = response.choices[0].message.content
 
+        import re
+
+# Extraire la note (par ex. "7/10")
+match = re.search(r"(\d(?:\.\d)?)/10", feedback)
+note = float(match.group(1)) if match else None
+
+
         if "10/10" in feedback:
             st.balloons()
             st.success("🔥 WOUAH ! 10/10 – Tu viens de casser la baraque avec ce speech 🔥")
 
     st.markdown(feedback, unsafe_allow_html=True)
+
+if note:
+    st.markdown("### 🎯 Baromètre de performance")
+    draw_gauge(note)
+
 
     try:
         html_feedback = format_feedback_as_html(feedback, langue_detectee)
