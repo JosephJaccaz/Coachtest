@@ -56,6 +56,32 @@ textes = {
         "transcription_label": "📝 Trascrizione generata:"
     }
 }
+
+barometre_legendes = {
+    "fr": """
+- ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
+- 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
+- ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
+- 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
+- ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
+    """,
+    "de": """
+- ✅ **Vollständige Zustimmung (9–10)** : klar und ethisch überzeugend.
+- 🙂 **Gut, aber verbesserbar (7–8)** : solide, aber nicht ganz rund.
+- ⚠️ **Instabiles Gleichgewicht (5–6)** : teilweise unklar oder schwankend.
+- 🚨 **Fragwürdiger Ton (3–4)** : zu viel Druck oder Emotion.
+- ❌ **Starke Manipulation (1–2)** : nicht akzeptabel – bitte überarbeiten.
+    """,
+    "it": """
+- ✅ **Adesione totale (9–10)** : discorso chiaro e coinvolgente.
+- 🙂 **Buono ma migliorabile (7–8)** : buona base, da affinare.
+- ⚠️ **Equilibrio fragile (5–6)** : tono da rivedere.
+- 🚨 **Tonalità dubbia (3–4)** : troppo insistenza o emozione.
+- ❌ **Manipolazione evidente (1–2)** : discorso da rifare profondamente.
+    """
+}
+
+
 t = textes[langue_choisie]
 
 # Interface
@@ -142,17 +168,44 @@ def draw_gauge(score):
     st.pyplot(fig)
 
 
-def interpret_note(score):
-    if score >= 9:
-        return "🟢 Excellent – alignement parfait avec la méthode d’adhésion"
-    elif score >= 7:
-        return "🟢 Bon – encore perfectible sur quelques points"
-    elif score >= 5:
-        return "🟠 Moyen – équilibre émotionnel fragile"
-    elif score >= 3:
-        return "🔴 Faible – attention à la tonalité et au discours"
+def interpret_note(score, langue):
+    if langue == "de":
+        # traductions en allemand ici
+        if score >= 9:
+            return "🟢 Exzellent – vollständig im Einklang mit dem Dialogkonzept"
+        elif score >= 7:
+            return "🟢 Gut – kleinere Verbesserungen möglich"
+        elif score >= 5:
+            return "🟠 Mittel – emotionale Balance fragil"
+        elif score >= 3:
+            return "🔴 Schwach – auf Ton und Inhalt achten"
+        else:
+            return "⛔ Problematisch – muss grundlegend überarbeitet werden"
+    elif langue == "it":
+        # traductions en italien ici
+        if score >= 9:
+            return "🟢 Eccellente – perfettamente in linea con il metodo di adesione"
+        elif score >= 7:
+            return "🟢 Buono – migliorabile in alcuni punti"
+        elif score >= 5:
+            return "🟠 Medio – equilibrio emotivo fragile"
+        elif score >= 3:
+            return "🔴 Debole – attenzione al tono e al messaggio"
+        else:
+            return "⛔ Problema – discorso da rivedere profondamente"
     else:
-        return "⛔ Problématique – discours à retravailler profondément"
+        # français par défaut
+        if score >= 9:
+            return "🟢 Excellent – alignement parfait avec la méthode d’adhésion"
+        elif score >= 7:
+            return "🟢 Bon – encore perfectible sur quelques points"
+        elif score >= 5:
+            return "🟠 Moyen – équilibre émotionnel fragile"
+        elif score >= 3:
+            return "🔴 Faible – attention à la tonalité et au discours"
+        else:
+            return "⛔ Problématique – discours à retravailler profondément"
+
 
 
 
@@ -383,16 +436,16 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
     if note:
         st.markdown("### 🎯 Baromètre de performance")
         draw_gauge(note)
-        st.markdown(f"**{interpret_note(note)}**")
+        st.markdown(f"**{interpret_note(note, langue_choisie)}**")
 
-        with st.expander("ℹ️ Que signifie le baromètre ?"):
-            st.markdown("""
-- ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
-- 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
-- ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
-- 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
-- ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
-            """)
+
+        with st.expander({
+    "fr": "ℹ️ Que signifie le baromètre ?",
+    "de": "ℹ️ Was bedeutet das Barometer?",
+    "it": "ℹ️ Cosa indica il barometro?"
+}[langue_choisie]):
+    st.markdown(barometre_legendes[langue_choisie])
+
 
     st.markdown("---")
     st.markdown(feedback, unsafe_allow_html=True)
