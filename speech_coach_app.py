@@ -362,9 +362,9 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 
     st.markdown(feedback, unsafe_allow_html=True)
 
-if note:
-    st.markdown("### 🎯 Baromètre de performance")
-    draw_gauge(note)
+    if note:
+        st.markdown("### 🎯 Baromètre de performance")
+        draw_gauge(note)
 
 
     try:
