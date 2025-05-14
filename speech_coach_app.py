@@ -360,7 +360,6 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 \"\"\"{transcript}\"\"\"
 """
 
-
     with st.spinner("💬 Génération du feedback pédagogique..."):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -373,36 +372,33 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
         )
         feedback = response.choices[0].message.content
 
-
         # Extraire la note (par ex. "7/10")
         match = re.search(r"(\d(?:\.\d)?)/10", feedback)
         note = float(match.group(1)) if match else None
-
 
         if "10/10" in feedback:
             st.balloons()
             st.success("🔥 WOUAH ! 10/10 – Tu viens de casser la baraque avec ce speech 🔥")
 
+    # Affichage feedback et baromètre
+    if note:
+        st.markdown("### 🎯 Baromètre de performance")
+        draw_gauge(note)
+        st.markdown(f"**{interpret_note(note)}**")
+
+        with st.expander("ℹ️ Que signifie le baromètre ?"):
+            st.markdown("""
+- ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
+- 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
+- ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
+- 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
+- ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
+            """)
+
+    st.markdown("---")
     st.markdown(feedback, unsafe_allow_html=True)
 
-        if note:
-            st.markdown("### 🎯 Baromètre de performance")
-            draw_gauge(note)
-            st.markdown(f"**{interpret_note(note)}**")
-
-            with st.expander("ℹ️ Que signifie le baromètre ?"):
-                st.markdown("""
-        - ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
-        - 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
-        - ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
-        - 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
-        - ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
-                """)
-
-        st.markdown("---")
-        st.markdown(feedback, unsafe_allow_html=True)
-
-
+    # Envoi par email
     try:
         html_feedback = format_feedback_as_html(feedback, langue_detectee)
         msg = MIMEText(html_feedback, "html", "utf-8")
