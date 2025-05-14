@@ -352,9 +352,9 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 
         import re
 
-# Extraire la note (par ex. "7/10")
-match = re.search(r"(\d(?:\.\d)?)/10", feedback)
-note = float(match.group(1)) if match else None
+        # Extraire la note (par ex. "7/10")
+        match = re.search(r"(\d(?:\.\d)?)/10", feedback)
+        note = float(match.group(1)) if match else None
 
 
         if "10/10" in feedback:
