@@ -138,21 +138,22 @@ def draw_gauge(score):
     # Clean style
     ax.set_axis_off()
     ax.set_ylim(0, 1.05)
-    plt.title("Score sur 10", y=1.15, fontsize=12)
+    plt.title("Curseur de Réussite", y=1.15, fontsize=5)
     st.pyplot(fig)
 
 
 def interpret_note(score):
     if score >= 9:
-        return "🟢 Adhésion pure – discours exemplaire ✅"
+        return "🟢 Excellent – alignement parfait avec la méthode d’adhésion"
     elif score >= 7:
-        return "🟢 Sincère mais perfectible – quelques ajustements possibles"
+        return "🟢 Bon – encore perfectible sur quelques points"
     elif score >= 5:
-        return "🟠 Équilibre fragile – attention à certaines formulations ⚠️"
+        return "🟠 Moyen – équilibre émotionnel fragile"
     elif score >= 3:
-        return "🔴 Tonalité douteuse – trop émotionnel ou insistant 🚨"
+        return "🔴 Faible – attention à la tonalité et au discours"
     else:
-        return "⛔ Manipulation forte – à corriger d’urgence ❌"
+        return "⛔ Problématique – discours à retravailler profondément"
+
 
 
 if user_email and audio_file is not None:
