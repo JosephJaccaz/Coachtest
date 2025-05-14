@@ -59,26 +59,27 @@ textes = {
 
 barometre_legendes = {
     "fr": """
-- ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
-- 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
-- ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
-- 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
-- ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
+- ✅ **Adhésion pure (9–10)** : Excellent équilibre entre conviction, clarté et éthique.
+- 🙂 **Sincère mais perfectible (7–8)** : Tu es sur la bonne voie, encore un petit effort pour atteindre l’excellence.
+- ⚠️ **Équilibre fragile (5–6)** : Ton discours vacille entre authenticité et maladresse.
+- 🚨 **Tonalité douteuse (3–4)** : L’intention de convaincre est là, mais la manière pose problème.
+- ❌ **Manque de méthode ou de travail (1–2)** : Le discours contrevient aux principes d’adhésion sincère.
     """,
     "de": """
-- ✅ **Vollständige Zustimmung (9–10)** : klar und ethisch überzeugend.
-- 🙂 **Gut, aber verbesserbar (7–8)** : solide, aber nicht ganz rund.
-- ⚠️ **Instabiles Gleichgewicht (5–6)** : teilweise unklar oder schwankend.
-- 🚨 **Fragwürdiger Ton (3–4)** : zu viel Druck oder Emotion.
-- ❌ **Starke Manipulation (1–2)** : nicht akzeptabel – bitte überarbeiten.
+- ✅ **Vollständige Zustimmung (9–10)** : Hervorragendes Gleichgewicht zwischen Überzeugung, Klarheit und Ethik.
+- 🙂 **Gut, aber verbesserbar (7–8)** : Du bist auf dem richtigen Weg – mit etwas Feinschliff erreichst du das nächste Level.
+- ⚠️ **Instabiles Gleichgewicht (5–6)** : Dein Pitch schwankt zwischen Authentizität und Unsicherheit.
+- 🚨 **Zweifelhafter Ton (3–4)** : Die Überzeugungsabsicht ist da, aber der Ton wirkt unpassend.
+- ❌ **Mangel an Methode oder Vorbereitung (1–2)** : Der Pitch widerspricht den Grundprinzipien ehrlicher Zustimmung.
     """,
     "it": """
-- ✅ **Adesione totale (9–10)** : discorso chiaro e coinvolgente.
-- 🙂 **Buono ma migliorabile (7–8)** : buona base, da affinare.
-- ⚠️ **Equilibrio fragile (5–6)** : tono da rivedere.
-- 🚨 **Tonalità dubbia (3–4)** : troppo insistenza o emozione.
-- ❌ **Manipolazione evidente (1–2)** : discorso da rifare profondamente.
+- ✅ **Adesione totale (9–10)** : Ottimo equilibrio tra convinzione, chiarezza ed etica.
+- 🙂 **Buono ma migliorabile (7–8)** : Sei sulla buona strada – basta un piccolo sforzo per raggiungere l’eccellenza.
+- ⚠️ **Equilibrio fragile (5–6)** : Il tuo discorso oscilla tra autenticità e incertezza.
+- 🚨 **Tonalità dubbia (3–4)** : L’intento di convincere c’è, ma la forma crea disagio.
+- ❌ **Mancanza di metodo o preparazione (1–2)** : Il discorso non rispetta i principi dell’adesione sincera.
     """
+
 }
 
 
@@ -164,7 +165,6 @@ def draw_gauge(score):
     # Clean style
     ax.set_axis_off()
     ax.set_ylim(0, 1.05)
-    plt.title("Curseur de Réussite", y=1.15, fontsize=5)
     st.pyplot(fig)
 
 
@@ -433,18 +433,18 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
             st.success("🔥 WOUAH ! 10/10 – Tu viens de casser la baraque avec ce speech 🔥")
 
     # Affichage feedback et baromètre
-if note:
-    st.markdown("### 🎯 Baromètre de performance")
-    draw_gauge(note)
-    st.markdown(f"**{interpret_note(note, langue_choisie)}**")
+    if note:
+        st.markdown("### 🎯 Baromètre de performance")
+        draw_gauge(note)
+        st.markdown(f"**{interpret_note(note, langue_choisie)}**")
 
-    with st.expander({
-        "fr": "ℹ️ Que signifie le baromètre ?",
-        "de": "ℹ️ Was bedeutet das Barometer?",
-        "it": "ℹ️ Cosa indica il barometro?"
-    }[langue_choisie]):
-        st.markdown(barometre_legendes[langue_choisie])  # ⬅️ Bien indenté ici
 
+        with st.expander({
+    "fr": "ℹ️ Que signifie le baromètre ?",
+    "de": "ℹ️ Was bedeutet das Barometer?",
+    "it": "ℹ️ Cosa indica il barometro?"
+}[langue_choisie]):
+    st.markdown(barometre_legendes[langue_choisie])
 
 
     st.markdown("---")
