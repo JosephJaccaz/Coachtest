@@ -493,7 +493,6 @@ if note:
     }[langue_choisie]):
         st.markdown(barometre_legendes[langue_choisie])
 
-    st.markdown("---")
     st.markdown(feedback, unsafe_allow_html=True)
 
 
