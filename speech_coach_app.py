@@ -110,13 +110,16 @@ def format_feedback_as_html(feedback_text, langue):
     </div>
     """
 def draw_gauge(score):
-    fig, ax = plt.subplots(figsize=(4, 2.2), subplot_kw={'projection': 'polar'})
-    ax.set_theta_zero_location('N')
-    ax.set_theta_direction(-1)
+    import matplotlib.pyplot as plt
+    import numpy as np
 
-    # Définition des couleurs et zones
+    fig, ax = plt.subplots(figsize=(3.8, 1.8), subplot_kw={'projection': 'polar'})
+    ax.set_theta_zero_location('S')  # Met le 0 (score faible) en bas
+    ax.set_theta_direction(1)        # Sens antihoraire (rouge à gauche, vert à droite)
+
+    # Zones colorées
     zones = [
-        (1, 2, 'darkred'),
+        (0, 2, 'darkred'),
         (2, 4, 'red'),
         (4, 6, 'orange'),
         (6, 8, 'yellowgreen'),
@@ -126,15 +129,16 @@ def draw_gauge(score):
     for start, end, color in zones:
         theta1 = np.interp(start, [0, 10], [0, np.pi])
         theta2 = np.interp(end, [0, 10], [0, np.pi])
-        ax.barh(1, width=theta2-theta1, left=theta1, height=0.3, color=color, edgecolor='white')
+        ax.barh(1, width=theta2 - theta1, left=theta1, height=0.35, color=color, edgecolor='white')
 
     # Aiguille
     angle = np.interp(score, [0, 10], [0, np.pi])
-    ax.plot([angle, angle], [0, 1], color='black', lw=3)
+    ax.plot([angle, angle], [0, 1], color='black', lw=2.5)
 
+    # Clean style
     ax.set_axis_off()
-    ax.set_ylim(0, 0.9)
-    plt.title("Score sur 10", y=1.08, fontsize=12)
+    ax.set_ylim(0, 1.05)
+    plt.title("Score sur 10", y=1.15, fontsize=12)
     st.pyplot(fig)
 
 
