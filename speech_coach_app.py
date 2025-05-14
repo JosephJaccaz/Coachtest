@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 import io
 import matplotlib.pyplot as plt
 import numpy as np
-
+import re
 
 
 st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
@@ -350,7 +350,6 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
         )
         feedback = response.choices[0].message.content
 
-        import re
 
         # Extraire la note (par ex. "7/10")
         match = re.search(r"(\d(?:\.\d)?)/10", feedback)
