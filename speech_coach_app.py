@@ -113,7 +113,7 @@ def draw_gauge(score):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    fig, ax = plt.subplots(figsize=(3.8, 1.8), subplot_kw={'projection': 'polar'})
+    fig, ax = plt.subplots(figsize=(2.8, 0.8), subplot_kw={'projection': 'polar'})
     ax.set_theta_zero_location('S')  # Met le 0 (score faible) en bas
     ax.set_theta_direction(1)        # Sens antihoraire (rouge à gauche, vert à droite)
 
