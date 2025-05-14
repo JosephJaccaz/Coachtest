@@ -177,6 +177,22 @@ Voici la structure à suivre pour chaque étape :
 
 Reprends ici le tutoiement.
 
+Ton objectif est d’évaluer si le discours repose sur une méthode d’adhésion sincère ou s’il dévie vers des techniques de manipulation émotionnelle, culpabilisation ou pression implicite.
+
+Identifie et signale précisément les éléments suivants :
+
+Tonalité manipulatrice : emploi excessif de peur, de chantage émotionnel, d’exagérations ou de termes anxiogènes.
+
+Culpabilisation du passant : tournures de phrases qui font sentir au passant qu’il serait "mauvais", "indifférent", ou "complice" s’il ne donne pas.
+
+Langage trop insistant ou directif : absence d’espace pour le choix du passant, formules qui imposent plutôt qu’elles n’invitent.
+
+Respect du libre arbitre : absence de validation du droit du passant à dire non.
+
+Équilibre émotionnel : discours basé sur une énergie positive, sincère et informative, sans mise en scène excessive ni pathos appuyé.
+
+Pour chaque élément problématique, cite le passage exact, explique pourquoi c’est problématique et propose une alternative formulée de manière plus éthique.
+
 Termine par un message chaleureux, encourageant mais motivant et honnête. Félicite l’effort fourni, encourage à continuer, et donne quelques conseils utiles pour améliorer tes prochains speechs.
 
 Tu peux conclure de manière simple, pro et humaine.
