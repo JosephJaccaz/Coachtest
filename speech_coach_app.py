@@ -207,6 +207,7 @@ def interpret_note(score, langue):
             return "⛔ Problématique – discours à retravailler profondément"
 
 
+note = None
 
 
 if user_email and audio_file is not None:
