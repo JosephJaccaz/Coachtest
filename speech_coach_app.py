@@ -144,6 +144,17 @@ def draw_gauge(score):
 
     st.pyplot(fig)
 
+def interpret_note(score):
+    if score >= 9:
+        return "🟢 Adhésion pure – discours exemplaire ✅"
+    elif score >= 7:
+        return "🟢 Sincère mais perfectible – quelques ajustements possibles"
+    elif score >= 5:
+        return "🟠 Équilibre fragile – attention à certaines formulations ⚠️"
+    elif score >= 3:
+        return "🔴 Tonalité douteuse – trop émotionnel ou insistant 🚨"
+    else:
+        return "⛔ Manipulation forte – à corriger d’urgence ❌"
 
 
 if user_email and audio_file is not None:
@@ -377,6 +388,19 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
     if note:
         st.markdown("### 🎯 Baromètre de performance")
         draw_gauge(note)
+        st.markdown(f"**{interpret_note(note)}**")
+            with st.expander("ℹ️ Que signifie le baromètre ?"):
+        st.markdown("""
+- ✅ **Adhésion pure (9–10)** : discours très aligné avec les standards.
+- 🙂 **Sincère mais perfectible (7–8)** : bon fond, à peaufiner.
+- ⚠️ **Équilibre fragile (5–6)** : vigilance nécessaire.
+- 🚨 **Tonalité douteuse (3–4)** : déséquilibre émotionnel.
+- ❌ **Manipulation forte (1–2)** : à retravailler en profondeur.
+        """)
+
+
+    st.markdown("---")
+    st.markdown(feedback, unsafe_allow_html=True)
 
 
     try:
