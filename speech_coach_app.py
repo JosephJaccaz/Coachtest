@@ -435,7 +435,12 @@ Concludi in modo semplice, professionale e umano – come un buon coach.
 
 # Affichage feedback et baromètre
 if note:
-    st.markdown("### 🎯 Baromètre de performance")
+    st.markdown({
+    "fr": "### 🎯 Baromètre de performance",
+    "de": "### 🎯 Leistungsbarometer",
+    "it": "### 🎯 Barometro di performance"
+}[langue_choisie])
+
     draw_gauge(note)
     st.markdown(f"**{interpret_note(note, langue_choisie)}**")
 
