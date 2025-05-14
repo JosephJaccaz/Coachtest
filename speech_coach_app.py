@@ -110,10 +110,7 @@ def format_feedback_as_html(feedback_text, langue):
     </div>
     """
 def draw_gauge(score):
-    import matplotlib.pyplot as plt
-    import numpy as np
-
-    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw={'projection': 'polar'})
+    fig, ax = plt.subplots(figsize=(4, 2.2), subplot_kw={'projection': 'polar'})
     ax.set_theta_zero_location('N')
     ax.set_theta_direction(-1)
 
@@ -131,18 +128,15 @@ def draw_gauge(score):
         theta2 = np.interp(end, [0, 10], [0, np.pi])
         ax.barh(1, width=theta2-theta1, left=theta1, height=0.3, color=color, edgecolor='white')
 
-    # Position de l'aiguille
+    # Aiguille
     angle = np.interp(score, [0, 10], [0, np.pi])
     ax.plot([angle, angle], [0, 1], color='black', lw=3)
 
-    # Enlève tout le reste
     ax.set_axis_off()
-    ax.set_ylim(0, 1.1)
-
-    # Titre facultatif
-    plt.title("Score sur 10", y=1.1, fontsize=14)
-
+    ax.set_ylim(0, 0.9)
+    plt.title("Score sur 10", y=1.08, fontsize=12)
     st.pyplot(fig)
+
 
 def interpret_note(score):
     if score >= 9:
