@@ -89,7 +89,29 @@ t = textes[langue_choisie]
 st.title(t["titre"])
 st.write(t["intro"])
 user_email = st.text_input(t["email_label"], key="email")
-audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
+
+# 🎧 Choix du mode d'entrée
+mode_entree = st.radio(
+    "🎧 Comment veux-tu soumettre ton pitch ?",
+    ["Uploader un fichier", "Enregistrer directement"],
+    horizontal=True
+)
+
+audio_bytes = None
+
+if mode_entree == "Uploader un fichier":
+    audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
+    if audio_file:
+        audio_bytes = audio_file.read()
+
+elif mode_entree == "Enregistrer directement":
+    audio_bytes = st.audio_recorder("🎙️ Appuie pour enregistrer ton pitch", format="audio/wav")
+    if audio_bytes:
+        st.success("✅ Enregistrement terminé !")
+
+
+
+
 st.markdown(t["info_format"])
 
 openai.api_key = st.secrets["openai_key"]
@@ -210,13 +232,13 @@ def interpret_note(score, langue):
 note = None
 
 
-if user_email and audio_file is not None:
+if user_email and audio_bytes is not None:
     st.success(f"✅ Fichier reçu : {audio_file.name}")
 
     with st.spinner("⏳ Transcription en cours avec Whisper..."):
         audio_bytes = audio_file.read()
         audio_io = io.BytesIO(audio_bytes)
-        audio_io.name = audio_file.name
+        audio_io.name = "speech.wav"  # nom générique, utile pour Whisper
         transcript = openai.audio.transcriptions.create(
             model="whisper-1",
             file=audio_io,
