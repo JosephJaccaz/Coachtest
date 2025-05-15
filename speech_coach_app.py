@@ -190,7 +190,14 @@ def draw_gauge(score):
     fig.patch.set_alpha(0)  # Fond transparent (utile si tu veux l'intégrer avec d'autres éléments visuels)
 
 
-    st.pyplot(fig)
+    import PIL.Image as Image
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0, transparent=True)
+    buf.seek(0)
+    img = Image.open(buf)
+    st.image(img)
+
 
 
 def interpret_note(score, langue):
