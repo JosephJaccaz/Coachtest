@@ -6,3 +6,4 @@ ffmpeg
 matplotlib
 streamlit-webrtc
 soundfile
+numpy
