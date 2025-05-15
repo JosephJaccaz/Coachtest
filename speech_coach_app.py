@@ -150,38 +150,34 @@ def draw_gauge(score):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    fig, ax = plt.subplots(figsize=(2.8, 0.8), subplot_kw={'projection': 'polar'}, dpi=150)
-    ax.set_theta_zero_location('S')  # Met le 0 (score faible) en bas
-    ax.set_theta_direction(1)        # Sens antihoraire (rouge à gauche, vert à droite)
-    ax.barh(
-    1, width=theta2 - theta1, left=theta1,
-    height=0.35, color=color, edgecolor='white', linewidth=0.5
-    )
+    fig, ax = plt.subplots(figsize=(6, 1.2), dpi=150)
 
+    # Configuration des zones
+    colors = ['#b2182b', '#ef8a62', '#fddbc7', '#d1e5f0', '#67a9cf', '#2166ac']
+    thresholds = [0, 2, 4, 6, 8, 9, 10]
 
-    # Zones colorées
-    zones = [
-    (0, 2, '#d73027'),       # rouge sombre
-    (2, 4, '#fc8d59'),       # orange-rouge
-    (4, 6, '#fee08b'),       # jaune pâle
-    (6, 8, '#d9ef8b'),       # vert tendre
-    (8, 10, '#91cf60')       # vert vif
-    ]
-
-
-    for start, end, color in zones:
-        theta1 = np.interp(start, [0, 10], [0, np.pi])
-        theta2 = np.interp(end, [0, 10], [0, np.pi])
-        ax.barh(1, width=theta2 - theta1, left=theta1, height=0.35, color=color, edgecolor='white')
+    for i in range(len(thresholds)-1):
+        ax.barh(
+            y=0,
+            width=thresholds[i+1] - thresholds[i],
+            left=thresholds[i],
+            height=0.5,
+            color=colors[i],
+            edgecolor='white'
+        )
 
     # Aiguille
-    angle = np.interp(score, [0, 10], [0, np.pi])
-    ax.plot([angle, angle], [0, 1], color='black', lw=2.5)
+    ax.plot([score, score], [-0.1, 0.6], color='black', lw=3)
+    ax.plot(score, 0.6, 'o', color='black', markersize=6)
 
-    # Clean style
-    ax.set_axis_off()
-    ax.set_ylim(0, 1.1)
+    # Suppression du cadre
+    ax.set_xlim(0, 10)
+    ax.set_ylim(-0.2, 1)
+    ax.axis('off')
+
+    # Affichage
     st.pyplot(fig)
+
 
 
 def interpret_note(score, langue):
