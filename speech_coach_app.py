@@ -150,33 +150,43 @@ def draw_gauge(score):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    fig, ax = plt.subplots(figsize=(6, 1.2), dpi=150)
+    fig, ax = plt.subplots(figsize=(4.5, 2.2), dpi=160, subplot_kw={'projection': 'polar'})
 
-    # Configuration des zones
-    colors = ['#b2182b', '#ef8a62', '#fddbc7', '#d1e5f0', '#67a9cf', '#2166ac']
-    thresholds = [0, 2, 4, 6, 8, 9, 10]
+    ax.set_theta_zero_location('S')  # 0 = en bas
+    ax.set_theta_direction(1)        # sens antihoraire
 
-    for i in range(len(thresholds)-1):
+    # Définition des zones de couleur (rouge -> orange -> jaune -> vert clair -> vert foncé)
+    zones = [
+        (0, 2, '#8B0000'),       # Rouge foncé
+        (2, 4, '#FF4500'),       # Orange vif
+        (4, 6, '#FFA500'),       # Orange clair
+        (6, 8, '#ADFF2F'),       # Vert clair
+        (8, 10, '#228B22')       # Vert foncé
+    ]
+
+    for start, end, color in zones:
+        theta1 = np.interp(start, [0, 10], [0, np.pi])
+        theta2 = np.interp(end, [0, 10], [0, np.pi])
         ax.barh(
-            y=0,
-            width=thresholds[i+1] - thresholds[i],
-            left=thresholds[i],
-            height=0.5,
-            color=colors[i],
+            y=1,
+            width=theta2 - theta1,
+            left=theta1,
+            height=0.35,
+            color=color,
             edgecolor='white'
         )
 
     # Aiguille
-    ax.plot([score, score], [-0.1, 0.6], color='black', lw=3)
-    ax.plot(score, 0.6, 'o', color='black', markersize=6)
+    angle = np.interp(score, [0, 10], [0, np.pi])
+    ax.plot([angle, angle], [0, 1], color='black', lw=3)
+    ax.plot(angle, 1, 'o', color='black', markersize=6)
 
-    # Suppression du cadre
-    ax.set_xlim(0, 10)
-    ax.set_ylim(-0.2, 1)
+    # Style propre
+    ax.set_ylim(0, 1.1)
     ax.axis('off')
 
-    # Affichage
     st.pyplot(fig)
+
 
 
 
