@@ -10,9 +10,6 @@ from email.mime.text import MIMEText
 
 
 
-
-
-
 st.experimental_audio_recorder = getattr(st, "audio_recorder", None)
 
 
@@ -153,18 +150,24 @@ def draw_gauge(score):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    fig, ax = plt.subplots(figsize=(2.8, 0.8), subplot_kw={'projection': 'polar'})
+    fig, ax = plt.subplots(figsize=(2.8, 0.8), subplot_kw={'projection': 'polar'}, dpi=150)
     ax.set_theta_zero_location('S')  # Met le 0 (score faible) en bas
     ax.set_theta_direction(1)        # Sens antihoraire (rouge à gauche, vert à droite)
+    ax.barh(
+    1, width=theta2 - theta1, left=theta1,
+    height=0.35, color=color, edgecolor='white', linewidth=0.5
+    )
+
 
     # Zones colorées
     zones = [
-        (0, 2, 'darkred'),
-        (2, 4, 'red'),
-        (4, 6, 'orange'),
-        (6, 8, 'yellowgreen'),
-        (8, 10, 'green')
+    (0, 2, '#d73027'),       # rouge sombre
+    (2, 4, '#fc8d59'),       # orange-rouge
+    (4, 6, '#fee08b'),       # jaune pâle
+    (6, 8, '#d9ef8b'),       # vert tendre
+    (8, 10, '#91cf60')       # vert vif
     ]
+
 
     for start, end, color in zones:
         theta1 = np.interp(start, [0, 10], [0, np.pi])
@@ -177,7 +180,7 @@ def draw_gauge(score):
 
     # Clean style
     ax.set_axis_off()
-    ax.set_ylim(0, 1.05)
+    ax.set_ylim(0, 1.1)
     st.pyplot(fig)
 
 
