@@ -62,28 +62,28 @@ textes = {
 
 barometre_legendes = {
     "fr": """
-- ✅ **Adhésion pure (9–10)** : Excellent équilibre entre conviction, clarté et éthique.
-- 🙂 **Sincère mais perfectible (7–8)** : Tu es sur la bonne voie, encore un petit effort pour atteindre l’excellence.
-- ⚠️ **Équilibre fragile (5–6)** : Ton discours vacille entre authenticité et maladresse.
-- 🚨 **Tonalité douteuse (3–4)** : L’intention de convaincre est là, mais la manière pose problème.
-- ❌ **Manque de méthode ou de travail (1–2)** : Le discours contrevient aux principes d’adhésion sincère.
+- 🟢 **Excellent (9–10)** : Alignement parfait avec la méthode d’adhésion – discours inspirant, clair et éthique.
+- 🟢 **Bon (7–8)** : Tu es sur la bonne voie – encore perfectible sur quelques points.
+- 🟠 **Moyen (5–6)** : Équilibre émotionnel fragile – attention à certaines maladresses.
+- 🔴 **Faible (3–4)** : Ton discours perd en impact – problème de ton ou de structure.
+- ⛔ **Problématique (1–2)** : Le discours doit être entièrement revu – manque d’adhésion sincère.
     """,
     "de": """
-- ✅ **Vollständige Zustimmung (9–10)** : Hervorragendes Gleichgewicht zwischen Überzeugung, Klarheit und Ethik.
-- 🙂 **Gut, aber verbesserbar (7–8)** : Du bist auf dem richtigen Weg – mit etwas Feinschliff erreichst du das nächste Level.
-- ⚠️ **Instabiles Gleichgewicht (5–6)** : Dein Pitch schwankt zwischen Authentizität und Unsicherheit.
-- 🚨 **Zweifelhafter Ton (3–4)** : Die Überzeugungsabsicht ist da, aber der Ton wirkt unpassend.
-- ❌ **Mangel an Methode oder Vorbereitung (1–2)** : Der Pitch widerspricht den Grundprinzipien ehrlicher Zustimmung.
+- 🟢 **Exzellent (9–10)** : Perfekte Übereinstimmung mit dem Dialogkonzept – inspirierend, klar und ethisch.
+- 🟢 **Gut (7–8)** : Du bist auf dem richtigen Weg – kleine Verbesserungen sind noch möglich.
+- 🟠 **Mittel (5–6)** : Emotionale Balance instabil – einzelne Schwächen im Aufbau oder Ton.
+- 🔴 **Schwach (3–4)** : Der Pitch verliert an Wirkung – problematische Tonalität oder Struktur.
+- ⛔ **Problematisch (1–2)** : Muss vollständig überarbeitet werden – fehlende ehrliche Zustimmung.
     """,
     "it": """
-- ✅ **Adesione totale (9–10)** : Ottimo equilibrio tra convinzione, chiarezza ed etica.
-- 🙂 **Buono ma migliorabile (7–8)** : Sei sulla buona strada – basta un piccolo sforzo per raggiungere l’eccellenza.
-- ⚠️ **Equilibrio fragile (5–6)** : Il tuo discorso oscilla tra autenticità e incertezza.
-- 🚨 **Tonalità dubbia (3–4)** : L’intento di convincere c’è, ma la forma crea disagio.
-- ❌ **Mancanza di metodo o preparazione (1–2)** : Il discorso non rispetta i principi dell’adesione sincera.
+- 🟢 **Eccellente (9–10)** : Allineamento perfetto con il metodo di adesione – discorso chiaro, etico e coinvolgente.
+- 🟢 **Buono (7–8)** : Sei sulla buona strada – margine di miglioramento su alcuni punti.
+- 🟠 **Medio (5–6)** : Equilibrio emotivo fragile – attenzione a tono e costruzione.
+- 🔴 **Debole (3–4)** : Il discorso perde impatto – problemi di tono o struttura.
+- ⛔ **Problema (1–2)** : Va completamente rivisto – manca l’adesione sincera.
     """
-
 }
+
 
 
 t = textes[langue_choisie]
