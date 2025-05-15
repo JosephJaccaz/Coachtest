@@ -11,6 +11,15 @@ import re
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, ClientSettings
 import av
 
+import soundfile as sf
+import numpy as np
+
+audio_np = np.concatenate(list(audio_queue.queue))
+with io.BytesIO() as buf:
+    sf.write(buf, audio_np, samplerate=48000, format='WAV')
+    audio_bytes = buf.getvalue()
+
+
 WEBRTC_CLIENT_SETTINGS = ClientSettings(
     rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
     media_stream_constraints={"audio": True, "video": False},
@@ -116,11 +125,10 @@ if mode_entree == "Uploader un fichier":
 
 elif mode_entree == "Enregistrer directement":
     import queue
+    audio_queue = queue.Queue()
 
-audio_queue = queue.Queue()
-
-def audio_frame_callback(frame):
-    audio_queue.put(frame.to_ndarray().flatten())
+    def audio_frame_callback(frame):
+        audio_queue.put(frame.to_ndarray().flatten())
 
 if mode_entree == "Enregistrer directement":
     webrtc_ctx = webrtc_streamer(
