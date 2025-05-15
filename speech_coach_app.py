@@ -1,21 +1,15 @@
-
 import streamlit as st
 import openai
-from langdetect import detect
 import smtplib
-from email.mime.text import MIMEText
 import io
+import re
 import matplotlib.pyplot as plt
 import numpy as np
-import re
+from langdetect import detect
+from email.mime.text import MIMEText
 
-import soundfile as sf
-import numpy as np
 
-audio_np = np.concatenate(list(audio_queue.queue))
-with io.BytesIO() as buf:
-    sf.write(buf, audio_np, samplerate=48000, format='WAV')
-    audio_bytes = buf.getvalue()
+
 
 
 
