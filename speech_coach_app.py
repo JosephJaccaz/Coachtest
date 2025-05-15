@@ -8,13 +8,6 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import re
-try:
-    from streamlit_webrtc import webrtc_streamer, WebRtcMode, ClientSettings
-    webrtc_disponible = True
-except ImportError:
-    webrtc_disponible = False
-
-import av
 
 import soundfile as sf
 import numpy as np
@@ -24,11 +17,6 @@ with io.BytesIO() as buf:
     sf.write(buf, audio_np, samplerate=48000, format='WAV')
     audio_bytes = buf.getvalue()
 
-
-WEBRTC_CLIENT_SETTINGS = ClientSettings(
-    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-    media_stream_constraints={"audio": True, "video": False},
-)
 
 
 st.experimental_audio_recorder = getattr(st, "audio_recorder", None)
@@ -114,50 +102,10 @@ st.title(t["titre"])
 st.write(t["intro"])
 user_email = st.text_input(t["email_label"], key="email")
 
-if webrtc_disponible:
-    mode_entree = st.radio(
-        "🎧 Comment veux-tu soumettre ton pitch ?",
-        ["Uploader un fichier", "Enregistrer directement"],
-        horizontal=True
-    )
-else:
-    mode_entree = "Uploader un fichier"
-    st.info("ℹ️ L'enregistrement direct n'est pas disponible sur cette version en ligne.")
-
-
+audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
 audio_bytes = None
-
-if mode_entree == "Uploader un fichier":
-    audio_file = st.file_uploader(t["upload_label"], type=["mp3", "wav"], key="audio")
-    if audio_file:
-        audio_bytes = audio_file.read()
-
-#elif mode_entree == "Enregistrer directement":
-    #import queue
-    #audio_queue = queue.Queue()
-
-    #def audio_frame_callback(frame):
-        #audio_queue.put(frame.to_ndarray().flatten())
-
-#if mode_entree == "Enregistrer directement":
-    #webrtc_ctx = webrtc_streamer(
-        #key="speech",
-        #mode=WebRtcMode.SENDONLY,
-        #in_audio=True,
-        #client_settings=WEBRTC_CLIENT_SETTINGS,
-        #audio_frame_callback=audio_frame_callback,
-        #media_stream_constraints={"audio": True, "video": False},
-    #)
-
-    #if webrtc_ctx.state.playing:
-        #st.info("🎙️ Enregistrement en cours… Parle maintenant !")
-
-    #if st.button("✅ Terminer l’enregistrement"):
-        #if not audio_queue.empty():
-            #st.success("✅ Enregistrement capturé, en attente d'intégration.")
-        #else:
-            #st.warning("⏳ Aucun son détecté pour le moment.")
-
+if audio_file:
+    audio_bytes = audio_file.read()
 
 
 
