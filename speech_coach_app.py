@@ -150,7 +150,7 @@ def draw_gauge(score):
     import matplotlib.pyplot as plt
     import numpy as np
 
-    fig, ax = plt.subplots(figsize=(6, 2.2), dpi=160, subplot_kw={'projection': 'polar'})
+    fig, ax = plt.subplots(figsize=(5, 2.2), dpi=160, subplot_kw={'projection': 'polar'})
 
     # Mettre 0 à gauche (horizontal) et rotation antihoraire
     ax.set_theta_zero_location('W')  # 0° : Bas
@@ -185,6 +185,8 @@ def draw_gauge(score):
     # Nettoyage du style
     ax.set_ylim(0, 1.1)
     ax.axis('off')
+    plt.subplots_adjust(top=1.1, bottom=-0.3)
+
 
     st.pyplot(fig)
 
