@@ -233,10 +233,10 @@ note = None
 
 
 if user_email and audio_bytes is not None:
-    st.success(f"✅ Fichier reçu : {audio_file.name}")
+    st.success("✅ Speech reçu et prêt à être analysé")
 
     with st.spinner("⏳ Transcription en cours avec Whisper..."):
-        audio_bytes = audio_file.read()
+        
         audio_io = io.BytesIO(audio_bytes)
         audio_io.name = "speech.wav"  # nom générique, utile pour Whisper
         transcript = openai.audio.transcriptions.create(
