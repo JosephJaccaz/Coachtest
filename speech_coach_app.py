@@ -190,13 +190,27 @@ def draw_gauge(score):
     fig.patch.set_alpha(0)  # Fond transparent (utile si tu veux l'intégrer avec d'autres éléments visuels)
 
 
-    import PIL.Image as Image
+    from PIL import Image, ImageChops
 
+    # 1. Sauvegarde le graphique dans un buffer mémoire
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", pad_inches=0, transparent=True)
+    plt.close(fig)  # nettoyage mémoire
     buf.seek(0)
     img = Image.open(buf)
-    st.image(img)
+
+    # 2. Crop automatique du fond blanc transparent
+    bg = Image.new(img.mode, img.size, (255, 255, 255, 0))  # fond transparent
+    diff = ImageChops.difference(img, bg)
+    bbox = diff.getbbox()
+
+    if bbox:
+        img_cropped = img.crop(bbox)
+    else:
+        img_cropped = img  # fallback : pas de différence détectée
+
+    # 3. Affichage sans le moindre bord inutile
+    st.image(img_cropped)
 
 
 
