@@ -174,7 +174,8 @@ def draw_gauge(score):
             left=theta1,
             height=0.35,
             color=color,
-            edgecolor='white'
+            edgecolor='white',
+            linewidth=1.5
         )
 
     # Aiguille
@@ -185,7 +186,7 @@ def draw_gauge(score):
     # Nettoyage du style
     ax.set_ylim(0, 1.1)
     ax.axis('off')
-    plt.subplots_adjust(left=0.05, right=0.95, top=1.15, bottom=-0.25)
+    plt.subplots_adjust(left=0.05, right=0.95, top=1.05, bottom=-0.35)
     fig.patch.set_alpha(0)  # Fond transparent (utile si tu veux l'intégrer avec d'autres éléments visuels)
 
 
