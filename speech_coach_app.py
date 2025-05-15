@@ -153,8 +153,8 @@ def draw_gauge(score):
     fig, ax = plt.subplots(figsize=(6, 2.2), dpi=160, subplot_kw={'projection': 'polar'})
 
     # Mettre 0 à gauche (horizontal) et rotation antihoraire
-    ax.set_theta_zero_location('W')  # 0° à gauche
-    ax.set_theta_direction(1)
+    ax.set_theta_zero_location('S')  # 0° : Bas
+    ax.set_theta_direction(-1)
 
     # Définition des zones
     zones = [
