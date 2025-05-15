@@ -8,6 +8,14 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import re
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, ClientSettings
+import av
+
+WEBRTC_CLIENT_SETTINGS = ClientSettings(
+    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+    media_stream_constraints={"audio": True, "video": False},
+)
+
 
 st.experimental_audio_recorder = getattr(st, "audio_recorder", None)
 
@@ -107,12 +115,31 @@ if mode_entree == "Uploader un fichier":
         audio_bytes = audio_file.read()
 
 elif mode_entree == "Enregistrer directement":
-    if st.experimental_audio_recorder:
-        audio_bytes = st.experimental_audio_recorder("🎙️ Appuie pour enregistrer ton pitch", format="audio/wav")
-        if audio_bytes:
-            st.success("✅ Enregistrement terminé !")
-    else:
-        st.warning("🎙️ L'enregistrement audio n'est pas disponible sur cette version ou cette plateforme.")
+    import queue
+
+audio_queue = queue.Queue()
+
+def audio_frame_callback(frame):
+    audio_queue.put(frame.to_ndarray().flatten())
+
+if mode_entree == "Enregistrer directement":
+    webrtc_ctx = webrtc_streamer(
+        key="speech",
+        mode=WebRtcMode.SENDONLY,
+        in_audio=True,
+        client_settings=WEBRTC_CLIENT_SETTINGS,
+        audio_frame_callback=audio_frame_callback,
+        media_stream_constraints={"audio": True, "video": False},
+    )
+
+    if webrtc_ctx.state.playing:
+        st.info("🎙️ Enregistrement en cours… Parle maintenant !")
+
+    if st.button("✅ Terminer l’enregistrement"):
+        if not audio_queue.empty():
+            st.success("✅ Enregistrement capturé, en attente d'intégration.")
+        else:
+            st.warning("⏳ Aucun son détecté pour le moment.")
 
 
 
