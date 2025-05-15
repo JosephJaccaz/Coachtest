@@ -5,3 +5,4 @@ pydub
 ffmpeg
 matplotlib
 streamlit-webrtc
+soundfile
