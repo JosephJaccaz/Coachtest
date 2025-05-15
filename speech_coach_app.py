@@ -496,7 +496,7 @@ Puoi chiudere in modo semplice, professionale e autentico.
 
     with st.spinner("💬 Génération du feedback pédagogique..."):
         response = openai.chat.completions.create(
-            model="gpt-4.5",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "Tu es un coach bienveillant et structuré pour des ONG."},
                 {"role": "user", "content": prompt}
