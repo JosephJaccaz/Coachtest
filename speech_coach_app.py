@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
+st.experimental_audio_recorder = getattr(st, "audio_recorder", None)
+
 
 st.set_page_config(page_title="Speech Coach IA", page_icon="🎤")
 
@@ -105,9 +107,12 @@ if mode_entree == "Uploader un fichier":
         audio_bytes = audio_file.read()
 
 elif mode_entree == "Enregistrer directement":
-    audio_bytes = st.audio_recorder("🎙️ Appuie pour enregistrer ton pitch", format="audio/wav")
-    if audio_bytes:
-        st.success("✅ Enregistrement terminé !")
+    if st.experimental_audio_recorder:
+        audio_bytes = st.experimental_audio_recorder("🎙️ Appuie pour enregistrer ton pitch", format="audio/wav")
+        if audio_bytes:
+            st.success("✅ Enregistrement terminé !")
+    else:
+        st.warning("🎙️ L'enregistrement audio n'est pas disponible sur cette version ou cette plateforme.")
 
 
 
