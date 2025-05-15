@@ -4,6 +4,7 @@ langdetect
 pydub
 ffmpeg
 matplotlib
-streamlit-webrtc
-soundfile
 numpy
+soundfile
+streamlit-webrtc
+aiortc
